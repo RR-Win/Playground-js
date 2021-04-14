@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    pading: 0'
+
+}
+
+body {
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: lightgray;
+}
+
+h1 {
+    text-align: center;
+    text-shadow: 5px 5px 10px #000000;
+    margin: 50px
+}
+
+h2, p {
+    margin: 25px;
+}
+#kleuren ul {
+    list-style-type: none;
+    text-align: center;
+    padding :0;
+    width: 25%;
+    margin:auto;
+}
+
+.clock {
+    filter: drop-shadow(5px 10px 3px #00000044);
+
+    position:absolute;
+    bottom: 50%;
+    left: 50%;
+}
+
+.hourArm {
+    width: 3px;
+    height: 25vmin;
+    border: 2px white;
+    border-left: solid;
+    border-right: solid;
+
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: 50% 85%;
+    transform: translate(-50%, 15%);
+}
+
+.minuteArm {
+    width: 3px;
+    height: 40vmin;
+    background-color: white;
+    clip-path: polygon(50% 0%,
+            100% 50%,
+            100% 100%,
+            0% 100%,
+            0% 50%,
+            50% 0%);
+    filter:blur(1px);
+
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: 50% 85%;
+    transform: translate(-50%, 15%);
+}
+
+@keyframes fireSeconds {
+    from {
+        background: linear-gradient(to top, white 10%, red);
+    }
+
+    to {
+        background: linear-gradient(to top, white 100%, red);
+    }
+}
+
+.secondArm {
+    width: 1px;
+    height: 50vmin;
+
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: 50% 85%;
+    transform: translate(-50%, 15%);
+
+    transition: 1s;
+    animation: fireSeconds 1s ease-out infinite;
+}
+
+@keyframes flashLight {
+    from {
+        background-color: rgba(255, 255, 0, 1);
+    }
+
+    to {
+        background-color: rgba(255, 255, 0, 0);
+    }
+}
+
+.bol {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    /* border: solid 2px red; */
+    filter:blur(2px);
+
+    transform: translate(-50%, -100%);
+
+    animation: flashLight 1s ease-out infinite;
+}
