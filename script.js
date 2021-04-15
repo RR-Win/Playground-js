@@ -1,6 +1,25 @@
 console.log("------------ myScript ------------");
 // Check whether index.html and script.js are BOTH in the console -> NO!
 
+const clockSize = 90; // vmin
+const axesOvershoot = 15; // %
+
+
+
+const boodschap = document.getElementById("boodschap");
+const groet = document.getElementById("groet");
+const kleuren = document.getElementById("kleuren");
+
+const clock = document.getElementById("clock");
+const backFace = document.getElementById("backFace");
+const minuteDial = document.getElementsByClassName("minuteMark");
+const hourDial = document.getElementsByClassName("hourMark");
+
+const hourArm = document.getElementById("hourArm");
+const minuteArm = document.getElementById("minuteArm");
+const secondArm = document.getElementById("secondArm");
+
+
 
 const grt = 'Hello ';
 let msg;
@@ -26,8 +45,7 @@ let selectedColors = ["red", "white", "blue"]
 selectedColors[6] = "orange";
 let colorArray = [];
 
-for (let item = 0; item <= 8; item++) {
-    console.log(item + ": " + selectedColors[item]);
+for (let item = 0; item <= selectedColors.length - 1; item++) {
     if (selectedColors[item] != undefined) {
         if (selectedColors[item] == "orange") {
             colorArray.unshift("-");
@@ -37,33 +55,63 @@ for (let item = 0; item <= 8; item++) {
         }
     }
 }
-// console.log("Length: " + selectedColors.length);
-// console.log(colorArray);
-// console.log(typeof(colorArray));
 
 // Same code can be way shorter using filters!
 //let colorArray2 = selectedColors.filter(function(c) { return c!=undefined;});
 // ... or even shortr with short notation
 let colorArray2 = selectedColors.filter(c => c != undefined);
 colorArray2.unshift(colorArray2.pop());
-// console.log(colorArray2);
-// console.log(typeof(colorArray2));
+
 
 // interact with html and css
-document.getElementById("groet").innerHTML = greet(`${person.firstName} ${person.lastName}`);
-document.getElementById("groet").style.color = "lightBlue";
+groet.innerHTML = greet(`${person.firstName} ${person.lastName}`);
+groet.style.color = "lightBlue";
 
-document.getElementById("kleuren").innerHTML = "<ul>" + colorArray.map(c => '<li>' + c + '</li>').join("") + "</ul>";
-document.querySelectorAll('ul li').forEach(function(a){
-     a.style.backgroundColor = a.innerHTML;
-     console.log(a);
-     console.log(typeof(a));
+kleuren.innerHTML = "<ul>" + colorArray.map(c => '<li>' + c + '</li>').join("") + "</ul>";
+document.querySelectorAll('ul li').forEach(function(a) {
+    a.style.backgroundColor = a.innerHTML;
 });
+
+
+
+// =============================================================================
+// Clock
+// =============================================================================
+console.log("=== Clock ======================");
+clock.style.width = clockSize + "vmin";
+clock.style.height = clockSize + "vmin";
+
+let secondArmReach = clockSize * (0.50 * (1 - axesOvershoot/100)); // height-15% axes overshoot
+let markShift = secondArmReach + 0;
+let hourTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
+let minuteTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
+let secondTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
+
+
+// Create marks
+let minuteMarks = new Array(60).fill('<div class="minuteMark"></div>');
+let hourMarks = new Array(12).fill('<div class="hourMark"></div>');
+// join("") joins array elements without comma
+backFace.innerHTML = minuteMarks.join("") + hourMarks.join("");
+
+
+// Position marks
+for (i = 0; i < minuteDial.length; i++) {
+    minuteDial[i].style.transform = "translate(-50%, " + -markShift + "vmin) rotate(" + i * 6 + "deg)";
+    minuteDial[i].style.transformOrigin = "50% " + markShift + "vmin";
+}
+
+for (i = 0; i < hourDial.length; i++) {
+    hourDial[i].style.transform = "translate(-50%, " + -markShift + "vmin) rotate(" + i * 30 + "deg)";
+    hourDial[i].style.transformOrigin = "50% " + markShift + "vmin";
+}
+
 
 
 
 
 // use functions
+console.log("=== Function ======================");
 function timeChange() {
     let hours = new Date().getHours();
     let minutes = new Date().getMinutes();
@@ -82,13 +130,21 @@ function timeChange() {
     };
 
     // change message; to get leading zero, add zeros and with slice take 2 from the end till the end
-    document.getElementById("boodschap").innerHTML = msg + ", it's " + ("00" + hours).slice (-2) + ":" + ("00" + minutes).slice (-2) + ":" + ("00" + seconds).slice (-2) + ".";
+    boodschap.innerHTML = msg + ", it's " + ("00" + hours).slice(-2) + ":" + ("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2) + ".";
 
     // change hands
-    // class used for test; ID is more logic since ther's only 1
-    document.getElementsByClassName("hourArm")[0].style.transform = "translate(-50%, 15%) rotate(" + hours * 30 + "deg)";
-    document.getElementsByClassName("minuteArm")[0].style.transform = "translate(-50%, 15%) rotate(" + minutes * 6 + "deg)";
-    document.getElementsByClassName("secondArm")[0].style.transform = "translate(-50%, 15%) rotate(" + seconds * 6 + "deg)";
+    // remove previous rotation
+    hourTransform = hourTransform.slice(0, hourTransform.indexOf("rotate"));
+    minuteTransform = minuteTransform.slice(0, minuteTransform.indexOf("rotate"));
+    secondTransform = secondTransform.slice(0, secondTransform.indexOf("rotate"));
+    // add new rotation
+    hourTransform = hourTransform + "rotate(" + hours * 30 + "deg)";
+    minuteTransform = minuteTransform + "rotate(" + minutes * 6 + "deg)";
+    secondTransform = secondTransform + "rotate(" + seconds * 6 + "deg)";
+
+    hourArm.style.transform = hourTransform;
+    minuteArm.style.transform = minuteTransform;
+    secondArm.style.transform = secondTransform;
 
     // Change BG
     document.body.style.backgroundImage = "linear-gradient(" + -seconds * 6 + "deg, " +
