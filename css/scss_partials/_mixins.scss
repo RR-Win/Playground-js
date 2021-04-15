@@ -1,0 +1,15 @@
+@mixin centerObject {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin centerHand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, $handAxisOvershoot);
+    transform-origin: 50% (100%-$handAxisOvershoot);
+
+}

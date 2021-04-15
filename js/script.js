@@ -2,8 +2,9 @@ console.log("------------ myScript ------------");
 // Check whether index.html and script.js are BOTH in the console -> NO!
 
 const clockSize = 90; // vmin
+const secondHandLength = 50; // %
 const axesOvershoot = 15; // %
-
+// MATCH THESE WITH THE SCSS VARIABLES!!!
 
 
 const boodschap = document.getElementById("boodschap");
@@ -15,9 +16,9 @@ const backFace = document.getElementById("backFace");
 const minuteDial = document.getElementsByClassName("minuteMark");
 const hourDial = document.getElementsByClassName("hourMark");
 
-const hourArm = document.getElementById("hourArm");
-const minuteArm = document.getElementById("minuteArm");
-const secondArm = document.getElementById("secondArm");
+const hourArm = document.getElementById("hourHand");
+const minuteArm = document.getElementById("minuteHand");
+const secondArm = document.getElementById("secondHand");
 
 
 
@@ -81,7 +82,7 @@ console.log("=== Clock ======================");
 clock.style.width = clockSize + "vmin";
 clock.style.height = clockSize + "vmin";
 
-let secondArmReach = clockSize * (0.50 * (1 - axesOvershoot/100)); // height-15% axes overshoot
+let secondArmReach = clockSize * (secondHandLength/100 * (1 - axesOvershoot/100)); // height-15% axes overshoot
 let markShift = secondArmReach + 0;
 let hourTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
 let minuteTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
@@ -105,8 +106,6 @@ for (i = 0; i < hourDial.length; i++) {
     hourDial[i].style.transform = "translate(-50%, " + -markShift + "vmin) rotate(" + i * 30 + "deg)";
     hourDial[i].style.transformOrigin = "50% " + markShift + "vmin";
 }
-
-
 
 
 
