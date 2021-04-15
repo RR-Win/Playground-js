@@ -20,6 +20,8 @@ const hourArm = document.getElementById("hourHand");
 const minuteArm = document.getElementById("minuteHand");
 const secondArm = document.getElementById("secondHand");
 
+const hourBall = document.getElementById("hourBall");
+
 
 
 const grt = 'Hello ';
@@ -49,7 +51,7 @@ let colorArray = [];
 for (let item = 0; item <= selectedColors.length - 1; item++) {
     if (selectedColors[item] != undefined) {
         if (selectedColors[item] == "orange") {
-            colorArray.unshift("-");
+            colorArray.unshift("&nbsp");
             colorArray.unshift(selectedColors[item]);
         } else {
             colorArray.push(selectedColors[item]);
@@ -87,7 +89,7 @@ let markShift = secondArmReach + 0;
 let hourTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
 let minuteTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
 let secondTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
-
+let hourBallTransform = "translate(-50%, -50%) rotate(0deg)";
 
 // Create marks
 let minuteMarks = new Array(60).fill('<div class="minuteMark"></div>');
@@ -116,6 +118,10 @@ function timeChange() {
     let minutes = new Date().getMinutes();
     let seconds = new Date().getSeconds();
 
+    let hourAngle = hours * 30; // deg
+    let minuteAngle = minutes * 6; // deg
+    let secondAngle = seconds * 6; // deg
+
     if (hours < 6) {
         msg = "Good Night"
     } else if (hours < 12) {
@@ -136,14 +142,23 @@ function timeChange() {
     hourTransform = hourTransform.slice(0, hourTransform.indexOf("rotate"));
     minuteTransform = minuteTransform.slice(0, minuteTransform.indexOf("rotate"));
     secondTransform = secondTransform.slice(0, secondTransform.indexOf("rotate"));
+    hourBallTransform = hourBallTransform.slice(0, hourBallTransform.indexOf("rotate"));
     // add new rotation
-    hourTransform = hourTransform + "rotate(" + hours * 30 + "deg)";
-    minuteTransform = minuteTransform + "rotate(" + minutes * 6 + "deg)";
-    secondTransform = secondTransform + "rotate(" + seconds * 6 + "deg)";
+    hourTransform = hourTransform + "rotate(" + hourAngle + "deg)";
+    minuteTransform = minuteTransform + "rotate(" + minuteAngle + "deg)";
+    secondTransform = secondTransform + "rotate(" + secondAngle + "deg)";
+    hourBallTransform = hourBallTransform + "rotate(" + -hourAngle + "deg)";
 
     hourArm.style.transform = hourTransform;
     minuteArm.style.transform = minuteTransform;
     secondArm.style.transform = secondTransform;
+
+    hourBall.style.transform = hourBallTransform;
+    if (hourAngle <= 90 || hourAngle > 270) {
+        hourBall.style.top = "100%";
+    } else {
+        hourBall.style.top = "0%";
+    }
 
     // Change BG
     document.body.style.backgroundImage = "linear-gradient(" + -seconds * 6 + "deg, " +

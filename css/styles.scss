@@ -72,6 +72,16 @@
             border-left: solid $hourHandBorder white;
             border-right: solid $hourHandBorder white;
             @include centerHand;
+            transition: 1s;
+
+            #hourBall {
+                width: $hoursBallWidth;
+                height: $hoursBallWidth;
+                border-radius: 50%;
+                background: radial-gradient(farthest-corner at 40% 20%, rgba(255,255,255,1) 0%, rgba(127,127,127,1) 25%, rgba(0,0,0,1) 75%);
+                @include centerObject;
+                transition: top 1s ease-in 0.2s;
+            }
         }
 
         #minuteHand {
@@ -82,6 +92,7 @@
             filter: blur(1px);
             /* Make pointy and blur for smoothness */
             @include centerHand;
+            transition: 1s;
         }
 
         #secondHand {

@@ -111,6 +111,19 @@ h2, p {
     left: 50%;
     transform: translate(-50%, 15%);
     transform-origin: 50% 85%;
+    transition: 1s;
+}
+
+#clock #hands #hourHand #hourBall {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-corner at 40% 20%, white 0%, #7f7f7f 25%, black 75%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top 1s ease-in 0.2s;
 }
 
 #clock #hands #minuteHand {
@@ -125,6 +138,7 @@ h2, p {
     left: 50%;
     transform: translate(-50%, 15%);
     transform-origin: 50% 85%;
+    transition: 1s;
 }
 
 #clock #hands #secondHand {
