@@ -1,4 +1,8 @@
-$clockSize: 90vmin; /* not used; defined in js */
+// Only css variables can be imported in js
+// But variables can't be imported from css to scss or reversed, so need to declare them double
+
+$clockSize: 90vmin;
+:root {--clockSize_: 90;}
 
 $hourHandLength: 25%;
 $hourHandWidth: 3px;
@@ -9,10 +13,12 @@ $minuteHandLength: 40%;
 $minuteHandWidth: 5px;
 
 $secondHandLength: 50%;
+:root {--secondHandLength_: 50;}
 $secondHandWidth: 1px;
 $secondBolWidth: 9px;
 
 $handAxisOvershoot: 15%;
+:root {--axesOvershoot_: 15;}
 
 
 $hourMarkLength: 2.5%;

@@ -1,4 +1,15 @@
-/* not used; defined in js */
+:root {
+    --clockSize_: 90;
+}
+
+:root {
+    --secondHandLength_: 50;
+}
+
+:root {
+    --axesOvershoot_: 15;
+}
+
 * {
     margin: 0;
     padding: 0;

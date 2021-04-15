@@ -1,10 +1,13 @@
 console.log("------------ myScript ------------");
 // Check whether index.html and script.js are BOTH in the console -> NO!
 
-const clockSize = 90; // vmin
-const secondHandLength = 50; // %
-const axesOvershoot = 15; // %
-// MATCH THESE WITH THE SCSS VARIABLES!!!
+const clockSize = window.getComputedStyle(document.documentElement).getPropertyValue(`--clockSize_`); // vmin
+const secondHandLength = window.getComputedStyle(document.documentElement).getPropertyValue(`--secondHandLength_`); // %
+const axesOvershoot = window.getComputedStyle(document.documentElement).getPropertyValue(`--axesOvershoot_`); // %
+console.log(clockSize);
+console.log(secondHandLength);
+console.log(axesOvershoot);
+// MATCH THESE WITH THE CSS VARIABLES
 
 
 const boodschap = document.getElementById("boodschap");
