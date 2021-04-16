@@ -7,7 +7,7 @@ const axesOvershoot = window.getComputedStyle(document.documentElement).getPrope
 console.log(clockSize);
 console.log(secondHandLength);
 console.log(axesOvershoot);
-// MATCH THESE WITH THE CSS VARIABLES
+// Matched with css vars
 
 
 const boodschap = document.getElementById("boodschap");
@@ -27,6 +27,7 @@ const hourBall = document.getElementById("hourBall");
 
 
 
+// Use some variables and objects
 const grt = 'Hello ';
 let msg;
 
@@ -37,7 +38,6 @@ let person = {
     age: 30
 }
 
-// Use some variables and objects
 function greet(name) {
     return grt + name;
 }
@@ -46,7 +46,9 @@ console.log("By:  " + person.firstName);
 console.log("     " + person["lastName"]);
 console.log(property + ": " + person[property]);
 
-// use some arrays
+
+
+// Use some arrays
 let selectedColors = ["red", "white", "blue"]
 selectedColors[6] = "orange";
 let colorArray = [];
@@ -68,7 +70,6 @@ for (let item = 0; item <= selectedColors.length - 1; item++) {
 let colorArray2 = selectedColors.filter(c => c != undefined);
 colorArray2.unshift(colorArray2.pop());
 
-
 // interact with html and css
 groet.innerHTML = greet(`${person.firstName} ${person.lastName}`);
 groet.style.color = "lightBlue";
@@ -87,7 +88,7 @@ console.log("=== Clock ======================");
 clock.style.width = clockSize + "vmin";
 clock.style.height = clockSize + "vmin";
 
-let secondArmReach = clockSize * (secondHandLength/100 * (1 - axesOvershoot/100)); // height-15% axes overshoot
+let secondArmReach = clockSize * (secondHandLength / 100 * (1 - axesOvershoot / 100)); // height-15% axes overshoot
 let markShift = secondArmReach + 0;
 let hourTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
 let minuteTransform = "translate(-50%, " + axesOvershoot + "%) rotate(0deg)";
@@ -97,7 +98,7 @@ let hourBallTransform = "translate(-50%, -50%) rotate(0deg)";
 // Create marks
 let minuteMarks = new Array(60).fill('<div class="minuteMark"></div>');
 let hourMarks = new Array(12).fill('<div class="hourMark"></div>');
-// join("") joins array elements without comma
+// Joins array elements without comma; join("")
 backFace.innerHTML = minuteMarks.join("") + hourMarks.join("");
 
 
@@ -113,9 +114,9 @@ for (i = 0; i < hourDial.length; i++) {
 }
 
 
+// Use functions
+console.log("=== Function ===================");
 
-// use functions
-console.log("=== Function ======================");
 function timeChange() {
     let hours = new Date().getHours();
     let minutes = new Date().getMinutes();
@@ -123,24 +124,26 @@ function timeChange() {
 
     let hourAngle = hours * 30; // deg
     let minuteAngle = minutes * 6; // deg
-    let secondAngle = seconds * 6; // deg
+    let secondAngle = (seconds+1) * 6; // deg, add 1 for transition
 
-    if (hours < 6) {
+    if (hours < 5) {
         msg = "Good Night"
     } else if (hours < 12) {
         msg = "Good Morning"
+    } else if (hours < 15) {
+        msg = "Good Day"
     } else if (hours < 18) {
         msg = "Good Afternoon"
-    } else if (hours < 24) {
+    } else if (hours < 23) {
         msg = "Good Evening"
     } else {
-        msg = "WTF!?"
+        msg = "Good Night"
     };
 
-    // change message; to get leading zero, add zeros and with slice take 2 from the end till the end
+    // Change message; to get leading zero, add zeros and with slice take 2 from the end till the end
     boodschap.innerHTML = msg + ", it's " + ("00" + hours).slice(-2) + ":" + ("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2) + ".";
 
-    // change hands
+    // Change hands
     // remove previous rotation
     hourTransform = hourTransform.slice(0, hourTransform.indexOf("rotate"));
     minuteTransform = minuteTransform.slice(0, minuteTransform.indexOf("rotate"));
@@ -156,12 +159,31 @@ function timeChange() {
     minuteArm.style.transform = minuteTransform;
     secondArm.style.transform = secondTransform;
 
+    // Glowing Mark trail
+    // Use modulo (%) to compensate for negative (past) seconds
+    minuteDial[(seconds + 60) % 60].style.transition = "";
+    minuteDial[(seconds + 60) % 60].style.opacity = "1";
+    minuteDial[(seconds + 60 - 1) % 60].style.transition = "opacity 30s ease-out";
+    minuteDial[(seconds + 60 - 1) % 60].style.opacity = "0.1";
+
+    if (((seconds + 60) % 5) == 0) {
+        hourDial[((seconds + 60) % 60) / 5].style.transition = "";
+        hourDial[((seconds + 60) % 60) / 5].style.opacity = "1";
+    }
+    if (((seconds + 60 - 1) % 5) == 0) {
+        hourDial[((seconds + 60 - 1) % 60) / 5].style.transition = "opacity 30s ease-out";
+        hourDial[((seconds + 60 - 1) % 60) / 5].style.opacity = "0.1";
+    }
+
+    // Roling ball on hourHand
     hourBall.style.transform = hourBallTransform;
     if (hourAngle <= 90 || hourAngle > 270) {
         hourBall.style.top = "100%";
     } else {
         hourBall.style.top = "0%";
     }
+
+
 
     // Change BG
     document.body.style.backgroundImage = "linear-gradient(" + -seconds * 6 + "deg, " +

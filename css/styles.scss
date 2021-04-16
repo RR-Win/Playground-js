@@ -44,17 +44,28 @@
         }
 
         .minuteMark {
+            // @keyframes minuteMarkGlow {
+            //     from {
+            //         opacity: 0.1;
+            //     }
+            //
+            //     to {
+            //         opacity: 0;
+            //     }
+            // }
+            // animation: minuteMarkGlow 5s ease-out;
+
             width: $hourHandWidth;
             /* Was deliberately chosen to fit hourMarks */
             height: $minuteMarkLength;
             background-color: white;
-            opacity: 0.1;
+            opacity:0.1;
             @include centerObject;
             /* positioned in js */
             /* transform: translate(-50%, -40vmin); */
             /* transform-origin: 50% 42.5vmin; */
             &:nth-child(5n+1) {
-                opacity: 0;
+                background-color: rgba(255,255,255,0);
                 /* Make every 5 min invisible (is hourMark) */
             }
         }
