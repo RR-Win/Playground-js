@@ -1,15 +1,12 @@
 console.log("------------ myScript ------------");
 // Check whether index.html and script.js are BOTH in the console -> NO!
 
+// Read css vars (can't read scss vars)
 const clockSize = window.getComputedStyle(document.documentElement).getPropertyValue(`--clockSize_`); // vmin
 const secondHandLength = window.getComputedStyle(document.documentElement).getPropertyValue(`--secondHandLength_`); // %
 const axesOvershoot = window.getComputedStyle(document.documentElement).getPropertyValue(`--axesOvershoot_`); // %
-console.log(clockSize);
-console.log(secondHandLength);
-console.log(axesOvershoot);
-// Matched with css vars
 
-
+// Get html elements
 const boodschap = document.getElementById("boodschap");
 const groet = document.getElementById("groet");
 const kleuren = document.getElementById("kleuren");
@@ -27,7 +24,8 @@ const hourBall = document.getElementById("hourBall");
 
 
 
-// Use some variables and objects
+// === Excersise stuff =========================================================
+// Use some variables, objects, functions and arrays
 const grt = 'Hello ';
 let msg;
 
@@ -41,12 +39,6 @@ let person = {
 function greet(name) {
     return grt + name;
 }
-console.log(greet("World"));
-console.log("By:  " + person.firstName);
-console.log("     " + person["lastName"]);
-console.log(property + ": " + person[property]);
-
-
 
 // Use some arrays
 let selectedColors = ["red", "white", "blue"]
@@ -65,12 +57,18 @@ for (let item = 0; item <= selectedColors.length - 1; item++) {
 }
 
 // Same code can be way shorter using filters!
-//let colorArray2 = selectedColors.filter(function(c) { return c!=undefined;});
-// ... or even shortr with short notation
+// let colorArray2 = selectedColors.filter(function(c) { return c!=undefined;});
+// ... Or even shortr with short notation
 let colorArray2 = selectedColors.filter(c => c != undefined);
 colorArray2.unshift(colorArray2.pop());
 
-// interact with html and css
+// Log some stuff
+console.log(greet("World"));
+console.log("By:  " + person.firstName);
+console.log("     " + person["lastName"]);
+console.log(property + ": " + person[property]);
+
+// Interact with html and css
 groet.innerHTML = greet(`${person.firstName} ${person.lastName}`);
 groet.style.color = "lightBlue";
 
@@ -81,10 +79,11 @@ document.querySelectorAll('ul li').forEach(function(a) {
 
 
 
-// =============================================================================
+// ============================================================================
 // Clock
-// =============================================================================
+// ============================================================================
 console.log("=== Clock ======================");
+
 clock.style.width = clockSize + "vmin";
 clock.style.height = clockSize + "vmin";
 
@@ -102,6 +101,7 @@ let hourMarks = new Array(12).fill('<div class="hourMark"></div>');
 backFace.innerHTML = minuteMarks.join("") + hourMarks.join("");
 
 
+
 // Position marks
 for (i = 0; i < minuteDial.length; i++) {
     minuteDial[i].style.transform = "translate(-50%, " + -markShift + "vmin) rotate(" + i * 6 + "deg)";
@@ -114,9 +114,8 @@ for (i = 0; i < hourDial.length; i++) {
 }
 
 
-// Use functions
-console.log("=== Function ===================");
 
+// Change Clock and BG
 function timeChange() {
     let hours = new Date().getHours();
     let minutes = new Date().getMinutes();
@@ -124,7 +123,7 @@ function timeChange() {
 
     let hourAngle = hours * 30; // deg
     let minuteAngle = minutes * 6; // deg
-    let secondAngle = (seconds+1) * 6; // deg, add 1 for transition
+    let secondAngle = (seconds + 1) * 6; // deg, add 1 for transition
 
     if (hours < 5) {
         msg = "Good Night"
@@ -143,6 +142,8 @@ function timeChange() {
     // Change message; to get leading zero, add zeros and with slice take 2 from the end till the end
     boodschap.innerHTML = msg + ", it's " + ("00" + hours).slice(-2) + ":" + ("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2) + ".";
 
+
+
     // Change hands
     // remove previous rotation
     hourTransform = hourTransform.slice(0, hourTransform.indexOf("rotate"));
@@ -158,6 +159,8 @@ function timeChange() {
     hourArm.style.transform = hourTransform;
     minuteArm.style.transform = minuteTransform;
     secondArm.style.transform = secondTransform;
+
+
 
     // Glowing Mark trail
     // Use modulo (%) to compensate for negative (past) seconds
@@ -175,9 +178,12 @@ function timeChange() {
         hourDial[((seconds + 60 - 1) % 60) / 5].style.opacity = "0.1";
     }
 
+
+
     // Roling ball on hourHand
     hourBall.style.transform = hourBallTransform;
-    if (hourAngle <= 90 || hourAngle > 270) {
+    if (hourAngle % 360 <= 90 || hourAngle % 360 > 270) {
+        // modulo (%) since it goes round twice (24hrs=720deg)
         hourBall.style.top = "100%";
     } else {
         hourBall.style.top = "0%";
@@ -195,4 +201,6 @@ function timeChange() {
 }
 
 // Call function every second
+// Separator to recognize looped logs
+console.log("=== Function ===================");
 setInterval(timeChange, 1000);
